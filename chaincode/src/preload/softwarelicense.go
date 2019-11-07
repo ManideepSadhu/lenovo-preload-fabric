@@ -1,10 +1,9 @@
-
 package main
 
 import (
 	"cycoreutils"
 	"fmt"
-	
+
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/pkg/errors"
 )
@@ -12,8 +11,8 @@ import (
 var SoftwareLicenseLogger = shim.NewLogger("softwarelicense")
 
 // var selectorTemplate = `{ "selector": { "objectType": "{{.ObjectType}}",
-//                         {{range $i, $e := .QueryFields}} "{{.FieldName}}": {{if .BoolFieldValue}} 
-//                         { "$eq": {{.BoolFieldValue}} {{else}} { "{{.Operator}}": "{{.FieldValue}}" 
+//                         {{range $i, $e := .QueryFields}} "{{.FieldName}}": {{if .BoolFieldValue}}
+//                         { "$eq": {{.BoolFieldValue}} {{else}} { "{{.Operator}}": "{{.FieldValue}}"
 // 						{{end}} } {{if len $.QueryFields | sub 1 | eq $i | not}},{{end}} {{end}}}}`
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +34,7 @@ func recordSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cyco
 	SoftwareLicense.ObjectType = "SoftwareLicense"
 
 	// Query and Retrieve the Full recordSoftwareLicense
-	keys := []string{  SoftwareLicense.License  }
+	keys := []string{SoftwareLicense.License}
 	SoftwareLicenseLogger.Debug("Keys for SoftwareLicense %s: ", keys)
 
 	collectionName = ""
@@ -52,13 +51,13 @@ func recordSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cyco
 
 	SoftwareLicenseBytes, _ := cycoreutils.ObjecttoJSON(SoftwareLicense)
 
-	err = cycoreutils.UpdateObject(stub, SoftwareLicense.ObjectType, keys, SoftwareLicenseBytes,collectionName)
-	
+	err = cycoreutils.UpdateObject(stub, SoftwareLicense.ObjectType, keys, SoftwareLicenseBytes, collectionName)
+
 	if err != nil {
 		SoftwareLicenseLogger.Errorf("recordSoftwareLicense() : Error inserting SoftwareLicense object into LedgerState %s", err)
 		return cycoreutils.ConstructResponse("SASTUPD009E", (errors.Wrapf(err, "SoftwareLicense object update failed")).Error(), nil)
 	}
-	
+
 	return cycoreutils.ConstructResponse("SASTREC011S", fmt.Sprintf("Successfully Recorded SoftwareLicense object"), SoftwareLicenseBytes)
 }
 
@@ -85,13 +84,13 @@ func querySoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cycor
 	}
 
 	// Query and Retrieve the Full SoftwareLicense
-	keys := []string{  SoftwareLicense.License  }
+	keys := []string{SoftwareLicense.License}
 	SoftwareLicenseLogger.Info("Keys for SoftwareLicense : ", keys)
 
 	collectionName = ""
 
 	Avalbytes, err = cycoreutils.QueryObject(stub, SoftwareLicense.ObjectType, keys, collectionName)
-		
+
 	if err != nil {
 		cycoreutils.ConstructResponse("SASTQRY003E", (errors.Wrapf(err, "Failed to query SoftwareLicense object")).Error(), nil)
 	}
@@ -117,11 +116,11 @@ func querySoftwareLicenseList(stub shim.ChaincodeStubInterface, args []string) c
 
 	var collectionName string
 	collectionName = ""
-    
+
 	queryString := fmt.Sprintf("{\"selector\":{\"objectType\":\"SoftwareLicense\"}}")
 	SoftwareLicenseLogger.Info("Query List: queryString: ", queryString)
 
-	queryResults, err := cycoreutils.GetQueryResultForQueryString(stub, queryString,collectionName)
+	queryResults, err := cycoreutils.GetQueryResultForQueryString(stub, queryString, collectionName)
 	if err != nil {
 		return cycoreutils.ConstructResponse("SASTQRY006E", (errors.Wrapf(err, "Failed to query SoftwareLicense object list")).Error(), nil)
 	}
@@ -137,10 +136,10 @@ func querySoftwareLicenseList(stub shim.ChaincodeStubInterface, args []string) c
 /// Update SoftwareLicense to the ledger by getting a copy of it, updating that copy, and overwriting the original to a newer version
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 func updateSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cycoreutils.Response {
-    var err error
+	var err error
 	var Avalbytes []byte
 	var collectionName string
-	
+
 	var SoftwareLicense = &softwarelicense{}
 	// Convert the arg to a updateSoftwareLicense object
 	SoftwareLicenseLogger.Info("updateSoftwareLicense() : Arguments for Query: SoftwareLicense : ", args[0])
@@ -150,13 +149,12 @@ func updateSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cyco
 	}
 	SoftwareLicense.ObjectType = "SoftwareLicense"
 	// Query and Retrieve the Full updateSoftwareLicense
-	keys := []string{  SoftwareLicense.License  }
+	keys := []string{SoftwareLicense.License}
 	SoftwareLicenseLogger.Info("Keys for SoftwareLicense : ", keys)
 
 	collectionName = ""
 
 	Avalbytes, err = cycoreutils.QueryObject(stub, SoftwareLicense.ObjectType, keys, collectionName)
-
 
 	if err != nil {
 		return cycoreutils.ConstructResponse("SASTQRY003E", (errors.Wrapf(err, "Failed to query SoftwareLicense object")).Error(), nil)
@@ -167,9 +165,9 @@ func updateSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cyco
 	}
 
 	SoftwareLicenseBytes, _ := cycoreutils.ObjecttoJSON(SoftwareLicense)
-	
+
 	err = cycoreutils.UpdateObject(stub, SoftwareLicense.ObjectType, keys, SoftwareLicenseBytes, collectionName)
-	
+
 	if err != nil {
 		SoftwareLicenseLogger.Errorf("updateSoftwareLicense() : Error updating SoftwareLicense object into LedgerState %s", err)
 		return cycoreutils.ConstructResponse("SASTUPD009E", (errors.Wrapf(err, "SoftwareLicense object update failed")).Error(), nil)
@@ -182,7 +180,7 @@ func updateSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cyco
 /// Delete SoftwareLicense from the ledger.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 func deleteSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cycoreutils.Response {
-    	
+
 	var err error
 	ObjectType := "SoftwareLicense"
 	var collectionName string
@@ -202,10 +200,10 @@ func deleteSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cyco
 	}
 
 	// Query and Retrieve the Full deleteSoftwareLicense
-	keys := []string{  SoftwareLicense.License  }
+	keys := []string{SoftwareLicense.License}
 	SoftwareLicenseLogger.Info("Keys for SoftwareLicense : ", keys)
 
-	err = cycoreutils.DeleteObject(stub, ObjectType, keys,collectionName)
+	err = cycoreutils.DeleteObject(stub, ObjectType, keys, collectionName)
 	if err != nil {
 		return cycoreutils.ConstructResponse("SASTDEL012E", (errors.Wrapf(err, "Failed to delete SoftwareLicense object")).Error(), nil)
 	}
@@ -217,7 +215,7 @@ func deleteSoftwareLicense(stub shim.ChaincodeStubInterface, args []string) cyco
 /// Query SoftwareLicense History from the ledger
 //////////////////////////////////////////////////////////////
 func querySoftwareLicenseHistory(stub shim.ChaincodeStubInterface, args []string) cycoreutils.Response {
-    	var err error
+	var err error
 	var Avalbytes []byte
 	var SoftwareLicense = &softwarelicense{}
 
@@ -232,10 +230,10 @@ func querySoftwareLicenseHistory(stub shim.ChaincodeStubInterface, args []string
 	}
 
 	// Query and Retrieve the Full SoftwareLicense
-	keys := []string{  SoftwareLicense.License  }
+	keys := []string{SoftwareLicense.License}
 	SoftwareLicenseLogger.Info("Keys for SoftwareLicense : ", keys)
 
-    Avalbytes, err = cycoreutils.GetObjectHistory(stub, "SoftwareLicense", keys)
+	Avalbytes, err = cycoreutils.GetObjectHistory(stub, "SoftwareLicense", keys)
 	if err != nil {
 		return cycoreutils.ConstructResponse("SASTQRY003E", (errors.Wrapf(err, "Failed to query SoftwareLicense object history")).Error(), nil)
 	}
@@ -249,9 +247,10 @@ func querySoftwareLicenseHistory(stub shim.ChaincodeStubInterface, args []string
 func querySoftwareLicenseOwner(stub shim.ChaincodeStubInterface, args []string) cycoreutils.Response {
 	var err error
 	var collectionName string
+	collectionName = ""
 	//var Avalbytes []byte
 	var SoftwareLicense = &softwarelicense{}
-						
+
 	if len(args) != 1 {
 		return cycoreutils.ConstructResponse("SUSRPARM001E", fmt.Sprintf("Expecting SoftwareLicense Owner}. Received %d arguments", len(args)), nil)
 	}
@@ -265,18 +264,18 @@ func querySoftwareLicenseOwner(stub shim.ChaincodeStubInterface, args []string) 
 	}
 
 	var owner = SoftwareLicense.Owner
-	queryString := fmt.Sprintf("{\"selector\":{\"ObjectType\":\"SoftwareLicense\",\"Owner\":\"$owner\"}}")
+	queryString := fmt.Sprintf("{\"selector\":{\"ObjectType\":\"SoftwareLicense\",\"Owner\":" + owner + "}}")
 
-	queryResults, err := GetQueryResultForQueryString(stub, queryString)
-	
+	queryResults, err := cycoreutils.GetQueryResultForQueryString(stub, queryString, collectionName)
+
 	if err != nil {
-	cycoreutils.ConstructResponse("SASTQRY003E", (errors.Wrapf(err, "Failed to query SoftwareLicense object")).Error(), nil)
+		cycoreutils.ConstructResponse("SASTQRY003E", (errors.Wrapf(err, "Failed to query SoftwareLicense object")).Error(), nil)
 	}
-						
+
 	// if len(Avalbytes) < 3 {
 	// return cycoreutils.ConstructResponse("SASTDNE004E", fmt.Sprintf("SoftwareLicense not found"), nil)
 	// }
-						
+
 	// SoftwareLicenseLogger.Info("querySoftwareLicense() : Returning SoftwareLicense results")
 	return cycoreutils.ConstructResponse("SASTQRY005S", fmt.Sprintf("Successfully Queried SoftwareLicense object"), queryResults)
 }

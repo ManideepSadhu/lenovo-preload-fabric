@@ -1,0 +1,129 @@
+openapi: 3.0.0
+info:
+  description: Project Kicker
+  version: 1.0.0
+  title: Project Kicker Role Mgmt
+tags:
+  - name: API Specification
+    description: All endpoints and payloads about your Project
+paths:
+  /roleConfig:
+    post:
+      tags:
+        - RoleConfig
+      summary: Create a new record role config
+      description: Record Role Config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordRoleConfig"
+        description: "role and roleAccess  "
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - RoleConfig
+      summary: Updates the recorded role config
+      description: Update Role Config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateRoleConfig"
+        description: "role and roleAccess  "
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+      security:
+        - bearerAuth: []
+  /roleconfiglist:
+    get:
+      tags:
+        - RoleConfig
+      summary: Get Role Config List
+      description: Gets all the role configs
+      responses:
+        "405":
+          description: Invalid input
+      security:
+        - bearerAuth: []
+  "/roleconfig/{ChainCodeID}":
+    get:
+      tags:
+        - RoleConfig
+      summary: Query Role Config
+      description: Query role config
+      parameters:
+        - in: path
+          name: ChainCodeID
+          description: ChaincodeID
+          required: true
+          schema:
+            type: string
+      responses:
+        "405":
+          description: Invalid input
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - RoleConfig
+      summary: Delete Role Config
+      description: Delete role config
+      parameters:
+        - in: path
+          name: ChainCodeID
+          description: ChaincodeID
+          required: true
+          schema:
+            type: string
+      responses:
+        "405":
+          description: Invalid input
+      security:
+        - api_key: []
+  "/roleconfighistory/{ChainCodeID}":
+    get:
+      tags:
+        - RoleConfig
+      summary: Request Role Config History
+      description: Request Role Config History
+      parameters:
+        - in: path
+          name: ChainCodeID
+          description: ChainCodeID
+          required: true
+          schema:
+            type: string
+      responses:
+        "405":
+          description: Invalid input
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    RecordRoleConfig:
+      properties:
+        role:
+          type: string
+        roleAccess:
+          type: array
+          items: {}
+    UpdateRoleConfig:
+      properties:
+        role:
+          type: string
+        roleAccess:
+          type: array
+          items: {}

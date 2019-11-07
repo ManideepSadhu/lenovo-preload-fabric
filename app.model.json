@@ -1,0 +1,36 @@
+{
+    "objects": [
+        {
+            "objectName": "SoftwareLicense",
+            "isAsset": true,
+            "isUserDefinedType": false,
+            "keys": [
+                {
+                    "name": "License",
+                    "type": "string"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "Owner",
+                    "type": "string"
+                },
+                {
+                    "name": "SoftwareName",
+                    "type": "string"
+                }
+            ],
+            "roles": [
+                {
+                    "name": "admin",
+                    "actions": [
+                        "GET",
+						"POST",
+						"PUT",
+						"DELETE"
+                    ]
+                }
+            ]
+        }
+    ]
+}

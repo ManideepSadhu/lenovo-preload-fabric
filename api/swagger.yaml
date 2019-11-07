@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  description: ""
+  version: 1.0.0
+  title: preload
+tags:
+  - name: API Specification
+    description: All endpoints and payloads about your Project
+paths:
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: User Login
+      description: User Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLogin"
+        description: "username, password & org "
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Register User
+      description: Register User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterUser"
+        description: userID, password & org
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+  /users/update:
+    post:
+      tags:
+        - users
+      summary: Update User Password
+      description: Update Password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+        description: new password
+        required: true
+      responses:
+        "405":
+          description: Invalid input
+      security:
+        - api_key: []
+  /softwarelicense:
+    post:
+      tags:
+        - softwarelicense
+      summary: Create a new softwarelicense
+      description: ""
+      operationId: ""
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/SoftwareLicense"
+      responses:
+        "405":
+          description: Invalid input
+    put:
+      tags:
+        - softwarelicense
+      summary: Update a/an existing softwarelicense
+      description: ""
+      operationId: ""
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/SoftwareLicense"
+      responses:
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: SoftwareLicense not found
+        "405":
+          description: Validation exception
+  "/softwarelicense/{license}":
+    get:
+      tags:
+        - softwarelicense
+      summary: get a/an softwarelicense by license as primary key
+      description: ""
+      operationId: ""
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: license
+          in: path
+          description: license as a key
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoftwareLicense"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: SoftwareLicense not found
+    delete:
+      tags:
+        - softwarelicense
+      summary: delete a/an softwarelicense by license as primary key
+      description: ""
+      operationId: ""
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: license
+          in: path
+          description: license as a key
+          required: true
+          schema:
+            type: string
+      responses:
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: SoftwareLicense not found
+  "/softwarelicensehistory/{license}":
+    get:
+      tags:
+        - softwarelicense
+      summary: get all softwarelicenses of type softwarelicense
+      description: ""
+      operationId: ""
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: license
+          in: path
+          description: license as a key
+          required: true
+          schema:
+            type: string
+      responses:
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: SoftwareLicense not found
+  /softwarelicenselist:
+    get:
+      tags:
+        - softwarelicense
+      summary: get all softwarelicenses of type softwarelicense
+      description: ""
+      operationId: ""
+      security:
+        - bearerAuth: []
+      responses:
+        "500":
+          description: server error
+components:
+  requestBodies:
+    SoftwareLicense:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SoftwareLicense"
+      description: softwarelicense key and value
+      required: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserLogin:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        org:
+          type: string
+    RegisterUser:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        org:
+          type: string
+        role:
+          type: string
+    UpdatePassword:
+      properties:
+        password:
+          type: string
+        newPassword:
+          type: string
+    SoftwareLicense:
+      type: object
+      properties:
+        License:
+          type: string
+        Owner:
+          type: string
+        SoftwareName:
+          type: string
+      required:
+        - License
+        - Owner
+        - SoftwareName

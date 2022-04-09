@@ -31,7 +31,7 @@
     "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.11",
     "log4js": "^1.1.1",
-    "moment": "^2.4.0",
+    "moment": "^2.29.2",
     "mongodb": "^2.2.33",
     "nanoid": "^2.0.0",
     "path": "^0.12.7",
